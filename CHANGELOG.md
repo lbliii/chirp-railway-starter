@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4 - 2026-07-14
+
+- Publish the canonical Railway template with its live demo and marketplace
+  screenshot.
+- Link the source repository to the zero-configuration deployment flow.
+
 ## 0.1.3 - 2026-07-14
 
 - Pin one application worker so the starter remains cost-bounded on Railway.

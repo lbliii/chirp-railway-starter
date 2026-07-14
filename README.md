@@ -9,9 +9,9 @@ the user for no configuration.
 
 ## Deploy
 
-The Railway marketplace link will appear here after the first template version
-is published. The template creates `CHIRP_SECRET_KEY`, sets
-`CHIRP_ENV=production`, and uses Railway's supplied `PORT` automatically.
+[Deploy Launch Board on Railway](https://railway.com/deploy/chirp-launch-board?referralCode=KU30ob&utm_medium=integration&utm_source=template&utm_campaign=generic).
+The template creates `CHIRP_SECRET_KEY`, resolves `CHIRP_ENV` from Railway's
+production environment, and uses Railway's supplied `PORT` automatically.
 
 ## Run locally
 
