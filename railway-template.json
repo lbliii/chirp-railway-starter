@@ -1,0 +1,76 @@
+{
+  "$schema": "https://raw.githubusercontent.com/lbliii/chirp-railway-catalog/main/schema/template-manifest.schema.json",
+  "schema_version": 1,
+  "template": {
+    "slug": "chirp-launch-board",
+    "title": "Python + HTMX Full-Stack Starter — powered by Chirp",
+    "repository": "https://github.com/lbliii/chirp-railway-starter",
+    "ref": "v0.1.0",
+    "python": "3.14",
+    "chirp_spec": ">=0.10,<0.11",
+    "chirp_locked": "0.10.0",
+    "start_command": "python app.py",
+    "health_path": "/ready",
+    "services": ["web"],
+    "variables": [
+      {"name": "PORT", "source": "railway", "secret": false},
+      {"name": "CHIRP_ENV", "source": "template", "secret": false},
+      {"name": "CHIRP_SECRET_KEY", "source": "template", "secret": true}
+    ]
+  },
+  "required_categories": [
+    "asset",
+    "form",
+    "full-page",
+    "health",
+    "htmx",
+    "oob",
+    "readiness",
+    "sse"
+  ],
+  "checks": [
+    {
+      "id": "full-page",
+      "category": "full-page",
+      "path": "/",
+      "contains": ["Launch Board", "Ship your first Chirp app"]
+    },
+    {
+      "id": "form",
+      "category": "form",
+      "path": "/",
+      "contains": ["action=\"/items\"", "_csrf_token"]
+    },
+    {
+      "id": "htmx-filter",
+      "category": "htmx",
+      "path": "/?filter=active",
+      "request_headers": {"HX-Request": "true", "HX-Target": "board"},
+      "contains": ["id=\"board\"", "Make one tiny change"]
+    },
+    {
+      "id": "oob-progress",
+      "category": "oob",
+      "path": "/?filter=done",
+      "request_headers": {"HX-Request": "true", "HX-Target": "board"},
+      "contains": ["hx-swap-oob", "id=\"progress\""]
+    },
+    {
+      "id": "sse-status",
+      "category": "sse",
+      "path": "/events",
+      "headers": {"content-type": "text/event-stream"},
+      "contains": ["event: live-status", "Launch Board is live"],
+      "stream": true
+    },
+    {
+      "id": "asset",
+      "category": "asset",
+      "path": "/styles.css",
+      "headers": {"content-type": "text/css"},
+      "contains": ["--ink:"]
+    },
+    {"id": "health", "category": "health", "path": "/health"},
+    {"id": "readiness", "category": "readiness", "path": "/ready"}
+  ]
+}

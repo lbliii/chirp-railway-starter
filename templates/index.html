@@ -1,0 +1,104 @@
+{% extends "chirp/layouts/shell.html" %}
+
+{% block title %}Launch Board · Chirp{% end %}
+
+{% block head %}
+<link rel="stylesheet" href="/styles.css">
+{% end %}
+
+{% block content %}
+{% block page_root %}
+<main class="shell">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Python + HTMX · powered by Chirp</p>
+      <h1>Launch Board</h1>
+      <p class="lede">A tiny, complete app you can deploy first and understand second.</p>
+    </div>
+    <div class="live" hx-ext="sse" sse-connect="/events" hx-disinherit="hx-target hx-swap">
+      <span class="pulse" aria-hidden="true"></span>
+      <span sse-swap="live-status" hx-target="this">
+        {% block live_status %}Launch Board is live · {{ elapsed | default(1) }}s{% end %}
+      </span>
+    </div>
+  </header>
+
+  <section class="workspace" aria-label="Launch checklist">
+    <div class="composer-card">
+      <p class="step">01 · Choose the next move</p>
+      <h2>What gets you closer to launch?</h2>
+      <form action="/items" method="post" hx-post="/items" hx-target="#board" hx-swap="outerHTML">
+        {{ csrf_field() }}
+        <label for="title">Next step</label>
+        <div class="composer-row">
+          <input id="title" name="title" maxlength="80" required
+                 placeholder="Invite the first tester" autocomplete="off">
+          <button type="submit">Add step <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      {% block notice %}
+      <p id="notice" class="notice" aria-live="polite">{{ notice }}</p>
+      {% end %}
+    </div>
+
+    {% block progress %}
+    <aside id="progress" class="progress-card" aria-label="Launch progress">
+      <div class="score"><strong>{{ percent }}%</strong><span>ready to ship</span></div>
+      <div class="meter" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+        <span style="width: {{ percent }}%"></span>
+      </div>
+      <p>{{ done_count }} of {{ total_count }} steps complete</p>
+    </aside>
+    {% end %}
+  </section>
+
+  {% block board %}
+  <section id="board" class="board" aria-labelledby="board-title">
+    <div class="board-head">
+      <div>
+        <p class="step">02 · Build momentum</p>
+        <h2 id="board-title">The shortest path to shipped</h2>
+      </div>
+      <nav class="filters" aria-label="Filter steps">
+        {% for value, label in [("all", "All"), ("active", "Open"), ("done", "Done")] %}
+        <a href="/?filter={{ value }}" hx-get="/?filter={{ value }}" hx-target="#board" hx-swap="outerHTML"
+           {% if filter_name == value %}aria-current="page"{% end %}>{{ label }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+
+    <ol class="items">
+      {% for item in items %}
+      <li class="item{% if item.done %} is-done{% end %}">
+        <form action="/items/{{ item.id }}/toggle" method="post"
+              hx-post="/items/{{ item.id }}/toggle" hx-target="#board" hx-swap="outerHTML">
+          {{ csrf_field() }}
+          <button class="check" type="submit" aria-label="Mark {{ item.title }} as {% if item.done %}open{% else %}done{% end %}">
+            <span aria-hidden="true">{% if item.done %}✓{% endif %}</span>
+          </button>
+        </form>
+        <span>{{ item.title }}</span>
+        <small>{% if item.done %}shipped{% else %}next up{% endif %}</small>
+      </li>
+      {% else %}
+      <li class="empty">Nothing in this view. That can be a good sign.</li>
+      {% endfor %}
+    </ol>
+
+    <div class="board-foot">
+      <span>Stored in a signed browser session · {{ total_count }}/{{ max_items }} slots</span>
+      <form action="/reset" method="post" hx-post="/reset" hx-target="#board" hx-swap="outerHTML">
+        {{ csrf_field() }}
+        <button class="text-button" type="submit">Reset the guide</button>
+      </form>
+    </div>
+  </section>
+  {% end %}
+
+  <footer>
+    <span>One service. Zero setup.</span>
+    <a href="https://chirp.b-stack.dev">Read the Chirp docs <span aria-hidden="true">↗</span></a>
+  </footer>
+</main>
+{% end %}
+{% end %}
