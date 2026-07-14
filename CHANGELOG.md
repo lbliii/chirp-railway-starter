@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5 - 2026-07-14
+
+- Correct the public Chirp documentation link and cover the canonical URL in
+  the rendered-page contract.
+
 ## 0.1.4 - 2026-07-14
 
 - Publish the canonical Railway template with its live demo and marketplace
