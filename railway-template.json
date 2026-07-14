@@ -5,12 +5,18 @@
     "slug": "chirp-launch-board",
     "title": "Python + HTMX Full-Stack Starter — powered by Chirp",
     "repository": "https://github.com/lbliii/chirp-railway-starter",
-    "ref": "v0.1.1",
+    "ref": "v0.1.2",
     "python": "3.14",
     "chirp_spec": ">=0.10,<0.11",
     "chirp_locked": "0.10.0",
     "start_command": "python app.py",
     "health_path": "/ready",
+    "owner": "lbliii",
+    "support_url": "https://github.com/lbliii/chirp-railway-starter/issues",
+    "status": "draft",
+    "public_url": "https://web-production-e37a56.up.railway.app",
+    "demo_url": "https://web-production-e37a56.up.railway.app",
+    "last_successful_smoke": "2026-07-14T20:35:43.588407+00:00",
     "services": ["web"],
     "variables": [
       {"name": "PORT", "source": "railway", "secret": false},
@@ -28,25 +34,63 @@
     "readiness",
     "sse"
   ],
+  "required_operations": [
+    "deployment",
+    "ejection",
+    "restart",
+    "rollback",
+    "shutdown",
+    "update"
+  ],
   "checks": [
     {
       "id": "full-page",
       "category": "full-page",
       "path": "/",
-      "contains": ["Launch Board", "Ship your first Chirp app"]
+      "contains": ["Launch Board", "Ship your first Chirp app"],
+      "extract": {"csrf": "name=\"_csrf_token\" value=\"([^\"]+)\""}
     },
     {
-      "id": "form",
+      "id": "malformed-form",
       "category": "form",
-      "path": "/",
-      "contains": ["action=\"/items\"", "_csrf_token"]
+      "method": "POST",
+      "path": "/items",
+      "request_headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "HX-Request": "true",
+        "HX-Target": "board"
+      },
+      "body": "title=&_csrf_token={{csrf}}",
+      "contains": ["Give the next step a short name.", "hx-swap-oob"]
+    },
+    {
+      "id": "no-js-add",
+      "category": "form",
+      "method": "POST",
+      "path": "/items",
+      "request_headers": {"Content-Type": "application/x-www-form-urlencoded"},
+      "body": "title=Invite+the+first+tester&_csrf_token={{csrf}}",
+      "contains": ["Invite the first tester", "Launch Board"]
+    },
+    {
+      "id": "htmx-complete",
+      "category": "oob",
+      "method": "POST",
+      "path": "/items/2/toggle",
+      "request_headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "HX-Request": "true",
+        "HX-Target": "board"
+      },
+      "body": "_csrf_token={{csrf}}",
+      "contains": ["Make one tiny change", "shipped", "hx-swap-oob"]
     },
     {
       "id": "htmx-filter",
       "category": "htmx",
       "path": "/?filter=active",
       "request_headers": {"HX-Request": "true", "HX-Target": "board"},
-      "contains": ["id=\"board\"", "Make one tiny change"]
+      "contains": ["id=\"board\"", "Ship your first Chirp app"]
     },
     {
       "id": "oob-progress",
@@ -56,7 +100,24 @@
       "contains": ["hx-swap-oob", "id=\"progress\""]
     },
     {
+      "id": "no-js-reset",
+      "category": "form",
+      "method": "POST",
+      "path": "/reset",
+      "request_headers": {"Content-Type": "application/x-www-form-urlencoded"},
+      "body": "_csrf_token={{csrf}}",
+      "contains": ["Deploy the starter", "Make one tiny change"]
+    },
+    {
       "id": "sse-status",
+      "category": "sse",
+      "path": "/events",
+      "headers": {"content-type": "text/event-stream"},
+      "contains": ["event: live-status", "Launch Board is live"],
+      "stream": true
+    },
+    {
+      "id": "sse-reconnect",
       "category": "sse",
       "path": "/events",
       "headers": {"content-type": "text/event-stream"},
@@ -71,6 +132,7 @@
       "contains": ["--ink:"]
     },
     {"id": "health", "category": "health", "path": "/health"},
-    {"id": "readiness", "category": "readiness", "path": "/ready"}
+    {"id": "readiness", "category": "readiness", "path": "/ready"},
+    {"id": "readiness-head", "category": "readiness", "method": "HEAD", "path": "/ready"}
   ]
 }
