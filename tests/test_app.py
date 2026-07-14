@@ -98,4 +98,5 @@ async def test_sse_emits_rendered_live_status() -> None:
 
 
 def test_app_contracts_pass() -> None:
+    assert app.config.workers == 1
     app.check()

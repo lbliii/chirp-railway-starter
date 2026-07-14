@@ -1,58 +1,88 @@
 {
   "base_url": "https://web-production-e37a56.up.railway.app",
-  "checked_at": "2026-07-14T20:35:43.588407+00:00",
-  "deployment_id": "610cbd3d-e372-47a7-8720-1c2a2ed742dc",
+  "checked_at": "2026-07-14T20:57:23.406336+00:00",
+  "deployment_id": "8877f5d4-197e-420e-a9f2-4736983c0499",
   "deployment_status": "SUCCESS",
   "results": [
     {
       "category": "full-page",
-      "elapsed_ms": 271,
+      "elapsed_ms": 247,
       "id": "full-page",
       "status": 200
     },
     {
       "category": "form",
-      "elapsed_ms": 222,
-      "id": "form",
+      "elapsed_ms": 239,
+      "id": "malformed-form",
+      "status": 200
+    },
+    {
+      "category": "form",
+      "elapsed_ms": 381,
+      "id": "no-js-add",
+      "status": 200
+    },
+    {
+      "category": "oob",
+      "elapsed_ms": 244,
+      "id": "htmx-complete",
       "status": 200
     },
     {
       "category": "htmx",
-      "elapsed_ms": 290,
+      "elapsed_ms": 189,
       "id": "htmx-filter",
       "status": 200
     },
     {
       "category": "oob",
-      "elapsed_ms": 200,
+      "elapsed_ms": 204,
       "id": "oob-progress",
       "status": 200
     },
     {
+      "category": "form",
+      "elapsed_ms": 379,
+      "id": "no-js-reset",
+      "status": 200
+    },
+    {
       "category": "sse",
-      "elapsed_ms": 197,
+      "elapsed_ms": 234,
       "id": "sse-status",
       "status": 200
     },
     {
+      "category": "sse",
+      "elapsed_ms": 163,
+      "id": "sse-reconnect",
+      "status": 200
+    },
+    {
       "category": "asset",
-      "elapsed_ms": 259,
+      "elapsed_ms": 178,
       "id": "asset",
       "status": 200
     },
     {
       "category": "health",
-      "elapsed_ms": 146,
+      "elapsed_ms": 260,
       "id": "health",
       "status": 200
     },
     {
       "category": "readiness",
-      "elapsed_ms": 151,
+      "elapsed_ms": 187,
       "id": "readiness",
+      "status": 200
+    },
+    {
+      "category": "readiness",
+      "elapsed_ms": 171,
+      "id": "readiness-head",
       "status": 200
     }
   ],
-  "source_ref": "v0.1.1",
+  "source_ref": "v0.1.2",
   "template": "chirp-launch-board"
 }

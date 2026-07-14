@@ -32,7 +32,12 @@ SEED_ITEMS = (
     {"id": 3, "title": "Ship your first Chirp app", "done": False},
 )
 
-config = AppConfig.from_env(template_dir=ROOT / "templates", worker_mode="async", htmx=True)
+config = AppConfig.from_env(
+    template_dir=ROOT / "templates",
+    worker_mode="async",
+    workers=1,
+    htmx=True,
+)
 if not config.secret_key:
     if config.env != "development":
         raise RuntimeError("CHIRP_SECRET_KEY is required outside development")

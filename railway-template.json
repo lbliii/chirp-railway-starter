@@ -5,7 +5,7 @@
     "slug": "chirp-launch-board",
     "title": "Python + HTMX Full-Stack Starter — powered by Chirp",
     "repository": "https://github.com/lbliii/chirp-railway-starter",
-    "ref": "v0.1.2",
+    "ref": "v0.1.3",
     "python": "3.14",
     "chirp_spec": ">=0.10,<0.11",
     "chirp_locked": "0.10.0",

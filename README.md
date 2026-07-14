@@ -30,6 +30,8 @@ entrypoint.
 - Every mutation remains a normal POST form when JavaScript is unavailable.
 - The checklist is bounded and stored in a signed per-browser cookie. It is a
   deliberate zero-database demo, not shared or durable persistence.
+- The starter explicitly runs one application worker to stay cost-bounded on
+  Railway while Chirp tracks quota-aware auto-detection in `lbliii/chirp#750`.
 - `/health` and `/ready` are Chirp's built-in liveness/readiness endpoints.
 - `railway-template.json` drives reusable local and deployed conformance checks.
 

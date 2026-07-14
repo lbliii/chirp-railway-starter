@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3 - 2026-07-14
+
+- Pin one application worker so the starter remains cost-bounded on Railway.
+- Track quota-aware automatic worker resolution in `lbliii/chirp#750`.
+
 ## 0.1.2 - 2026-07-14
 
 - Adopt stateful local/live conformance for the full Launch Board journey.
