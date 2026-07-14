@@ -35,6 +35,7 @@ async def test_full_page_health_and_asset_contracts() -> None:
     assert page.status == health.status == ready.status == css.status == 200
     assert "Launch Board" in page.text
     assert "Ship your first Chirp app" in page.text
+    assert 'href="https://lbliii.github.io/chirp/"' in page.text
     assert "--ink:" in css.text
 
 
